@@ -188,7 +188,7 @@ class DetailInfoDisplay extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       const Text(
-                        'ບັດຍັງໃຊ້ໄດ້',
+                        'ບັດຍັງຢູ່ໃນອາຍຸການໃຊ້ງານ',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.green,
@@ -210,7 +210,7 @@ class DetailInfoDisplay extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       const Text(
-                        'ບັດໝົດອາຍຸການໃຊ້', // "Card not valid"
+                        'ບັດໝົດອາຍຸການໃຊ້ງານ', // "Card not valid"
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.red,
