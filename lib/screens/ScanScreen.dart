@@ -1,10 +1,9 @@
-// D:\Nengxiong\Code\staypermitmobileapp\lib\screens\ScanScreen.dart
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http; // Added http import
-import 'dart:convert'; // Added for json.decode
+import 'package:http/http.dart' as http; // เพิ่ม http import
+import 'dart:convert'; // เพิ่มสำหรับ json.decode
 
 import '../services/ApiService.dart';
 import '../widgets/QRCodeScanner.dart';
@@ -24,7 +23,8 @@ class _ScanScreenState extends State<ScanScreen> {
 
   final TextEditingController _manualCodeController = TextEditingController();
 
-  List<Map<String, dynamic>> _apiData = [];
+  // เปลี่ยน _apiData ให้เก็บ Map เดียวหรือ null เนื่องจากเราจะดึงข้อมูลทีละรายการด้วยบาร์โค้ด
+  Map<String, dynamic>? _apiData;
   List<Map<String, dynamic>> matchedData = []; // เก็บข้อมูลที่ตรงกัน
   bool isCameraGranted = false;
 
@@ -41,7 +41,8 @@ class _ScanScreenState extends State<ScanScreen> {
   final String apiStatus = 'FINISHED';
   // WARNING: This token is expired based on current date. Please replace with a valid, non-expired token.
   final String apiAuthorizationToken =
-      'Bearer eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicGhvbmUiOiI5OTkyNTkyMiIsInJvbGUiOiJTVVBFUl9BRE1JTiIsImZpcnN0TmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6ImtvdW5AZ21haWwuY29tIiwib2ZmaWNlSWQiOm51bGwsImxhc3ROYW1lIjoiQWRtaW5pc3RyYXRvciIsInVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyT2ZmaWNlIjpbXSwiaWF0IjoxNzUwMTYwMDA3LCJleHAiOjE3NTAyNDY0MDcsImF1ZCI6Imh0dHBzOi8vdGhhdmlzb3VrbW5sdi5jb20iLCJpc3MiOiJCb2lsZXJwbGF0ZSIsInN1YiI6IlRoYXZpc291a21ubHZAZ21haWwuY29tIn0.TGUYNNaqlAbyxnFFHlyltol5gDAHI56leUmSFIEo4hWVPUeDGxfFC2tF2y3KjptNMUiNU2VhIoJTK8bGM0xY9GrvwC3ocddA2v4M6ADD8DIhbAPPnVpSoNu99ORM4WubpiP7m6_Su1b2EDItZiC_MYXOmCPaSnLibuo8dAdKAzAAEXjHZVm_U98HiahRCZOZnww8WR_FvtnvAJ0F0-loxZHUtN6kJw53V238zwV_PHfTTwcAfsjK89yXQJzHZXDL4P3XrDyOSdLJWdekMGHg0kYgor17LcrLjotJVpHV6ffzaue_cmgZ2vBuu5KIjUXZc1PHwuNljwvEIBlTDTIpgAoJlinnOrfsgkcJelgtHRTrVR6n-s-GexACp3tpDSqLJJqqMgFZakksQ2RlLS67OmqYC4GDSxpaFztAHdV_XwhpQ_HQD2VZF1oKV_XTapVvJC-kojPOBXiAYrHLuxwQHZUYhJ7npmaAWddjk4htHyQjKLxvcnoSAytDsmI4LiwYpOaO8Hj56Y1khdpqkphXacbc8ThYooEG8DWhN8aD3yXfwW7ADfvIktW50HYGhcFU-Y6Fw5W_jhX8SHwF8dy1p3-3DNI_9h4fTnA72qj1nMeZl7Ag9W6j6bRIVFkxXjaI6OjEfwhde7tAMM3rfkoBKcK-L5ADVOWrnqIRVMJLgFg';
+      'Bearer eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicGhvbmUiOiI5OTkyNTkyMiIsInJvbGUiOiJTVVBFUl9BRE1JTiIsImZpcnN0TmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6ImtvdW5AZ21haWwuY29tIiwib2ZmaWNlSWQiOm51bGwsImxhc3ROYW1lIjoiQWRtaW5pc3RyYXRvciIsInVzZXJuYW1lIjoiYWRtaW4iLCJ1c2VyT2ZmaWNlIjpbXSwiaWF0IjoxNzUwMjQxOTY3LCJleHAiOjE3NTAzMjgzNjcsImF1ZCI6Imh0dHBzOi8vdGhhdmlzb3VrbW5sdi5jb20iLCJpc3MiOiJCb2lsZXJwbGF0ZSIsInN1YiI6IlRoYXZpc291a21ubHZAZ21haWwuY29tIn0.wK8tAngAcpnCZJb6RkjVzzv5FpHmJRUfaVVnjHHCdoIgRiSbUc2g7RfKT5Kygd2hxTSvCRAeO1jym7GpdLdcF4WvoMpkoYZ4NoFVe1HX12zcr_6UvERUNjOoYDaq2k0m-xZagLRTvhwfTYVWpi7SN9QlywG-wj_JYxbkbZEazFGjBxaPVAdqKjnfIYsBFSm8eIwY9kACnwKwDnNxyjVj6WjGzQmFJ9euohFXcWwH6TL4CglDv6d9T05rJhvhoLfD-3i4mSWCqmQIdI200wX58hkqYHV-n11Qb2L6of1hi-9E-LOC6sTfR4nCF7dynkI-efJjqO3N7oLzMaC4BI0d4lxFqQSEZ6mxZ57ZLdO03eV9mLCTfJmfS-pFIjbmSOUA3hrviORTHguvZGI6kdItlceaZaueA2G6zRtSW3GXpQqDqO3i6XcPx6fnbTnKusQHO_8FpXtYlLeR3w3jdXzn818gI2Uzke1nAsuhpFNfp6_dV_GY6kYiuK25yPj75AVi3N0-QtkA39P1c0QSNXALHMA9guSApNZIuck2tT6ZWTd3y-4at_hQdvoRGC1ngs1kskt7xoxdnGHVy_Sjyn1QeqOVI1om-BWzOz-igMUUFDnJ_kp6uDp8TK-Fy-xPO36OKNrOdPqsD_orJaen40hD06bezDCUtreAtwKLg6t1kEA';
+
   // ตัวแปรไว้แสดงชื่อบ้านและประเทศ
   String currentVillageName = '';
   String overseasCountryName = '';
@@ -99,7 +100,7 @@ class _ScanScreenState extends State<ScanScreen> {
     super.initState();
     controller = MobileScannerController();
     _requestCameraPermission();
-    _fetchData(); // ดึงข้อมูล API มาเก็บไว้ใน _apiData
+    // ไม่ต้องเรียก _fetchData() แล้ว เพราะเราจะดึงข้อมูลตามบาร์โค้ดที่สแกน/ป้อน
   }
 
   void _requestCameraPermission() async {
@@ -130,33 +131,7 @@ class _ScanScreenState extends State<ScanScreen> {
     super.dispose();
   }
 
-  void _fetchData() async {
-    try {
-      final fetchedData = await ApiService.fetchApplicationData(
-        status: apiStatus,
-        authorizationToken: apiAuthorizationToken,
-      );
-
-      if (fetchedData.isEmpty) {
-        setState(() {
-          scannedCode = 'ບໍ່ພົບຂໍ້ມູນຈາກ API'; // หมายถึง _apiData ว่างเปล่า
-          matchedData = [];
-          _apiData = [];
-        });
-        return;
-      }
-
-      setState(() {
-        _apiData = fetchedData;
-      });
-    } catch (e) {
-      setState(() {
-        scannedCode = 'Error fetching data: $e';
-        matchedData = [];
-        _apiData = [];
-      });
-    }
-  }
+  // ลบฟังก์ชัน _fetchData() ออกไป เพราะเราจะไม่ดึงข้อมูลทั้งหมดมาเก็บไว้ก่อน
 
   void _onDetect(BarcodeCapture capture) {
     // If data is already displayed or an error message is shown (not the initial status)
@@ -173,46 +148,60 @@ class _ScanScreenState extends State<ScanScreen> {
       final String? code = barcodes.first.rawValue;
 
       if (code != null) {
+        // เพิ่มบรรทัดนี้เพื่อ print ค่าที่ได้จาก QR Code
+        print('ค่าที่ได้จาก QR Code: $code');
+
         _lastProcessedId = code; // Store the scanned ID
         _processCode(code);
         // Once a value is scanned, temporarily stop scanning
         controller?.stop();
+      } else {
+        setState(() {
+          scannedCode = 'ບໍ່ມີຂໍ້ມູນ!';
+        });
       }
     }
   }
 
-  void _processCode(String code) {
-    if (_apiData.isEmpty) {
+  void _processCode(String code) async {
+    // เปลี่ยนเป็น async
+    setState(() {
+      scannedCode = 'ກຳລັງດຶງຂໍ້ມູນ...'; // แสดงสถานะการกำลังดึงข้อมูล
+      matchedData = []; // ล้างข้อมูลที่แสดงอยู่ก่อน
+    });
+
+    try {
+      final fetchedData = await ApiService.fetchApplicationByBarcode(
+        barcode: code,
+        status: apiStatus,
+        authorizationToken: apiAuthorizationToken,
+      );
+
+      if (fetchedData != null && fetchedData.isNotEmpty) {
+        setState(() {
+          matchedData = [fetchedData];
+          _apiData = fetchedData; // เก็บข้อมูลที่ได้มา (เป็น Map เดียว)
+          scannedCode = ''; // Clear status message when data is found
+          _manualCodeController.clear(); // Clear input field
+          _lastProcessedId = ''; // Clear last processed ID when data is found
+          // Fetch profile names if data is found
+          _fetchProfileNames(fetchedData['profile']['id'].toString());
+        });
+      } else {
+        setState(() {
+          matchedData = [];
+          _apiData = null; // ไม่พบข้อมูล
+          // Use _lastProcessedId in the displayed message
+          scannedCode =
+              'ໄອດີ $_lastProcessedId ບໍ່ມີຂໍ້ມູນ'; // 'ไม่พบข้อมูลสำหรับ ID: $_lastProcessedId'
+        });
+      }
+    } catch (e) {
       setState(() {
-        scannedCode = 'ບໍ່ພົບຂໍ້ມູນ API ໃນລະບົບ'; // Means _apiData is empty
         matchedData = [];
-        _lastProcessedId = code; // Store the ID to show in error message
-      });
-      return;
-    }
-
-    final foundData = _apiData.firstWhere((application) {
-      final String? barcodeInProfile = application['profile']?['barcode']
-          ?.toString();
-      final String? idInApplication = application['id']?.toString();
-
-      return barcodeInProfile == code || idInApplication == code;
-    }, orElse: () => {});
-
-    if (foundData.isNotEmpty) {
-      setState(() {
-        matchedData = [foundData];
-        scannedCode = ''; // Clear status message when data is found
-        _manualCodeController.clear(); // Clear input field
-        _lastProcessedId = ''; // Clear last processed ID when data is found
-        // Fetch profile names if data is found
-        _fetchProfileNames(foundData['profile']['id'].toString());
-      });
-    } else {
-      setState(() {
-        matchedData = [];
-        // Use _lastProcessedId in the displayed message
-        scannedCode = 'ໄອດີ $_lastProcessedId ບໍ່ມີຂໍ້ມູນ';
+        _apiData = null;
+        scannedCode =
+            'ເກີດຂໍ້ຜິດພາດໃນການດຶງຂໍ້ມູນ: $e'; // 'เกิดข้อผิดพลาดในการดึงข้อมูล: $e'
       });
     }
   }
@@ -224,17 +213,17 @@ class _ScanScreenState extends State<ScanScreen> {
 
     setState(() {
       matchedData = []; // Clear displayed data
+      _apiData = null; // Clear fetched API data
       scannedCode = 'ລໍຖ້າສະແກນຄິວອາໂຄດ...'; // Revert to initial message
       _manualCodeController.clear(); // Clear input field
       _lastProcessedId = ''; // Clear last processed ID
-      _fetchData(); // Fetch new API data (if necessary)
+      // ไม่ต้องเรียก _fetchData() แล้ว
     });
   }
 
   String _getNestedValue(String key) {
-    Map<String, dynamic>? currentData = matchedData.isNotEmpty
-        ? matchedData[0]
-        : null;
+    // เปลี่ยนมาตรวจสอบ _apiData โดยตรง (ซึ่งตอนนี้เป็น Map หรือ null)
+    Map<String, dynamic>? currentData = _apiData;
 
     if (currentData == null || currentData.isEmpty) {
       return '';
@@ -503,7 +492,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
               const SizedBox(height: 20),
 
-              // 5. ปุ่มรีเซ็ต (สแกນใหม่) - แสดงเฉพาะเมื่อ _shouldShowResetButton เป็น true
+              // 5. ปุ่มรีเซ็ต (สแกนใหม่) - แสดงเฉพาะเมื่อ _shouldShowResetButton เป็น true
               if (_shouldShowResetButton)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
