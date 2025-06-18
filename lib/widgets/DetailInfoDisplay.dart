@@ -90,7 +90,7 @@ class DetailInfoDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, List<String>> groupedKeys = {
       'ຂໍ້ມູນສ່ວນຕົວ': [
-        "profile.applicationNumber",
+        "profile.identityNumber",
         "profile.phoneNumber",
         "profile.dateOfBirth",
         "profile.gender",

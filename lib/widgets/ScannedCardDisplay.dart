@@ -161,7 +161,7 @@ class ScannedCardDisplay extends StatelessWidget {
     final rightColumn = [
       {'label': 'ເຊື້ອຊາດ/Race', 'key': 'profile.ethnicity.name'},
       {'label': 'ສັນຊາດ/Nationality', 'key': 'profile.nationality.name'},
-      {'label': 'ເລກທີ່/No', 'key': 'number.number'},
+      {'label': 'ເລກທີ່/No', 'key': 'profile.identityNumber'},
     ];
 
     return Padding(
