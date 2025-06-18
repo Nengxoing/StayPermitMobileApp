@@ -310,7 +310,7 @@ class _ScanScreenState extends State<ScanScreen> {
         return 'ສັນຊາດ:';
       case 'profile.ethnicity.name':
         return 'ເຊື້ອຊາດ:';
-      case 'profile.currentVillage.villageLao': // Updated key
+      case 'profile.currentVillageId': // Updated key
         return 'ບ້ານ:';
       case 'profile.district.districtLao':
         return 'ເມືອງ:';
@@ -340,7 +340,7 @@ class _ScanScreenState extends State<ScanScreen> {
         return 'ຕຳແໜ່ງ:';
       case 'office.name':
         return 'ສຳນັກງານ:';
-      case 'profile.overseasCountry.name': // Updated key
+      case 'profile.overseasCountryId': // Updated key
         return 'ປະເທດ:';
       default:
         return key;
@@ -366,6 +366,7 @@ class _ScanScreenState extends State<ScanScreen> {
   Widget build(BuildContext context) {
     final String imageUrl = _getValue("profile.image");
     final String qrcodeUrlFromApi = _getValue("profile.barcode");
+    print("qrcodeUrlFromApi: $qrcodeUrlFromApi");
 
     return Scaffold(
       body: SingleChildScrollView(
