@@ -367,7 +367,7 @@ class _ScanScreenState extends State<ScanScreen> {
                                 },
                               ),
                             ),
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                             onSubmitted: (value) {
                               if (value.isNotEmpty) {
                                 _lastProcessedId = value;
