@@ -8,7 +8,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final String defaultImagePath = 'assets/istockphoto-1300845620-612x612.jpg';
+  // final String defaultImagePath = 'assets/istockphoto-1300845620-612x612.jpg';
+  final String defaultImagePath = 'assets/profile.jpeg';
   final String defaultQrCodePath = 'assets/MS THOUN LINKCHOU.png';
 
   final String _expCard =
