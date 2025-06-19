@@ -50,9 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> get _navItems {
-    if (role == 'ADMIN' || role == 'SUPER_ADMIN') {
+    if (role == 'SUPER_ADMIN') {
       return const <Widget>[Icon(Icons.home), Icon(Icons.qr_code_scanner)];
-    } else if (role == 'SUBSCRIBER') {
+    } else if (role == 'ADMIN') {
       return const <Widget>[Icon(Icons.person)];
     } else {
       return const <Widget>[Icon(Icons.qr_code_scanner)];
@@ -183,19 +183,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBody() {
-    if (role != 'ADMIN' && role != 'SUPER_ADMIN') {
-      return ScanScreen(); // Only scan screen for non-admin
-    }
-
-    switch (_selectedIndex) {
-      case 0:
-        return _buildHomeContent();
-      case 1:
-        return ScanScreen();
-      case 2:
-        return ProfileScreen();
-      default:
-        return Container();
+    if (role == 'SUPER_ADMIN') {
+      switch (_selectedIndex) {
+        case 0:
+          return _buildHomeContent();
+        case 1:
+          return ScanScreen();
+        default:
+          return Container();
+      }
+    } else if (role == 'ADMIN') {
+      return ProfileScreen(); // Only ProfileScreen for ADMIN
+    } else {
+      return ScanScreen(); // Only ScanScreen for others
     }
   }
 
