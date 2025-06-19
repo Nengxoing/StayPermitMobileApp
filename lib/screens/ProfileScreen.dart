@@ -34,8 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final String _position = 'ອະນາໄມ';
   final String _officeName = 'ເສິ້ງໄທ້';
 
-  final String _villageLao = 'ດອນໃຈ';
-  final String _districtLao = 'ຕຽງ';
+  final String _villageLao = 'ເຂດພິເສດສາມຫລ່ຽມທອງຄຳ';
+  final String _districtLao = 'ຕົ້ນເຜິ້ງ';
   final String _provinceLao = 'ບໍ່ແກ້ວ';
 
   final String _overseasProvince = 'MANDALAY';
