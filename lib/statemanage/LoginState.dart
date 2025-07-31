@@ -1,10 +1,10 @@
+// D:\Nengxiong\Flutter\staypermitmobileapp\lib\statemanage\LoginState.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:staypermitmobileapp/repository/Repository.dart';
 import 'package:staypermitmobileapp/routes/route_app.dart';
-import 'package:staypermitmobileapp/screens/HomeScreen.dart';
 import 'package:staypermitmobileapp/statemanage/app_verification_state.dart';
 import 'package:staypermitmobileapp/widgets/dialog_app_widget.dart';
 

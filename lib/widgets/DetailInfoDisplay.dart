@@ -307,7 +307,7 @@ class DetailInfoDisplay extends StatelessWidget {
                 ),
               ],
             );
-          }).toList(),
+          }),
         ],
       ),
     );

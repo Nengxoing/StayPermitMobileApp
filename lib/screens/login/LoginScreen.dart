@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:staypermitmobileapp/routes/route_app.dart';
-import 'package:staypermitmobileapp/screens/HomeScreen.dart';
 import 'package:staypermitmobileapp/statemanage/LoginState.dart';
 import 'package:staypermitmobileapp/statemanage/app_verification_state.dart';
 import 'package:staypermitmobileapp/widgets/dialog_app_widget.dart';

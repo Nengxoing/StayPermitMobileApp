@@ -8,19 +8,19 @@ class ContactScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Contact Us'),
-        backgroundColor: Color(0xFFF5D9AE)
+        backgroundColor: Color(0xFFF5D9AE),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('ຕິດຕໍ່ພວກເຮົາ', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 20),
-            ListTile(
-              leading: Icon(Icons.phone),
-              title: Text('020-1234-5678'),
+            Text(
+              'ຕິດຕໍ່ພວກເຮົາ',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 20),
+            ListTile(leading: Icon(Icons.phone), title: Text('020-1234-5678')),
             ListTile(
               leading: Icon(Icons.email),
               title: Text('info@example.com'),
@@ -41,14 +41,12 @@ class ContactScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {
-                
-              },
-              child: Text('ສົ່ງ'),
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFF5D9AE)
+                backgroundColor: Color(0xFFF5D9AE),
               ),
-            )
+              child: Text('ສົ່ງ'),
+            ),
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:staypermitmobileapp/screens/ContactScreen.dart';
 import 'package:staypermitmobileapp/screens/Donutchart.dart';
 import 'package:staypermitmobileapp/screens/ProfileScreen.dart';
 import 'package:staypermitmobileapp/screens/ScanScreen.dart';

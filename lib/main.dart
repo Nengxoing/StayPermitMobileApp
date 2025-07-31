@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:staypermitmobileapp/routes/route_app.dart';
-import 'package:staypermitmobileapp/screens/login/LoginScreen.dart';
 import 'package:get/get.dart';
 
 void main() => runApp(const Main());

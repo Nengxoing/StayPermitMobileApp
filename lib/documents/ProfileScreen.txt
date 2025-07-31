@@ -521,7 +521,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Icon(Icons.cancel, color: Colors.red, size: 20),
                       SizedBox(width: 6),
                       Text(
-                        profileData['profile']['cardStatus'],
+                        profileData['profile']['cardStatus'], // ใช้จาก profileData
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.red,
